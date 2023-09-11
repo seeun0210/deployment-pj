@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('./head') %>
+  <body>
+    <h1>로그인</h1>
+
+    <form onsubmit="login(event)">
+      <input type="text" id="userid" placeholder="아이디" />
+      <input type="password" id="pw" placeholder="비밀번호" />
+      <button type="submit">로그인</button>
+    </form>
+
+    <br />
+    <a href="/">홈</a>
+    <a href="/register">회원가입</a>
+
+    <script>
+      async function login(event) {
+        event.preventDefault(); // 기본 제출 멈춤
+        try {
+          const res = await axios({
+            method: "POST",
+            url: "/login",
+            data: {
+              userid: document.querySelector("#userid").value,
+              pw: document.querySelector("#pw").value,
+            },
+          });
+          if (res.data.result) {
+            alert(`${res.data.data.name}님 로그인 성공`);
+            document.location.href = "/";
+          } else {
+            alert(`${res.data.message}`);
+            document.location.reload();
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    </script>
+  </body>
+</html>
